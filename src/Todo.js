@@ -28,6 +28,13 @@ class Todo extends React.Component {
         }
     };
 
+    editEventHandler = (e) => {
+        const thisItem = this.state.item;
+        thisItem.title = e.target.value;
+        this.setState({ item: thisItem });
+    };
+
+
 
     render() {
         const item = this.state.item;
@@ -37,6 +44,7 @@ class Todo extends React.Component {
                 <ListItemText>
                     <InputBase 
                         onClick={this.offReadOnlyMode}
+                        onChange={this.editEventHandler}
                         onKeyPress={this.enterKeyEventHandler}
                         inputProps={{ "aria-label": "naked", readOnly: this.state.readOnly }}
                         type="text"
