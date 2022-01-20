@@ -9,11 +9,26 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      items : [
-        {id : "0", title: "Hello world 1", done: true},
-        {id : "1", title: "Hello world 2", done: false}
-      ],
+      items : [],
     };
+  }
+
+  componentDidMount() {
+    const requestOptions = {
+      method: "GET",
+      hearder: { "Content-Type": "application/json" }
+    };
+
+    fetch("http://localhost:8080/todo", requestOptions)
+      .then((response) => response.json)
+      .then((response) => {
+        this.setState({
+          items: response.data,
+        });
+      }, 
+      (error) => {
+        this.setState({error});
+      });
   }
 
   // 저장 이벤트
@@ -38,7 +53,6 @@ class App extends React.Component {
 
 
   render() {
-
     let todoItems = this.state.items.length > 0 && (
       <Paper style={{ margin: 16 }}>
         <List>
@@ -47,10 +61,9 @@ class App extends React.Component {
           ))}
         </List>
       </Paper>
-    )
+    );
 
     return (
-      
       <div className="App">
         <Container maxWidth="md">
           <AddTodo add={ this.add } />
